@@ -73,11 +73,7 @@ async function fetchAllValidFiles(): Promise<FileTreeNode[]> {
         );
         if (!alreadyExists) {
           collectedFiles.push(newFile);
-        } else {
-          console.log("Duplicate file received, skipping");
         }
-      } else {
-        console.log("Invalid file format, skipping:", newFile);
       }
     } catch (err) {
       console.error("Error fetching file:", err);
@@ -161,12 +157,13 @@ function FileTree({
       {nodes.map((node) => (
         <li key={node.name}>
           <div
-            className={`cursor-pointer ${
+            className={`cursor-pointer flex items-center gap-2 pl-1 hover:bg-gray-100 rounded-sm ${
               selected === node.path ? "font-bold text-blue-600" : ""
             }`}
             onClick={() => node.path && onSelect(node.path)}
           >
-            {node.name}
+            <span>{node.children ? "📁" : "🖼️"}</span>
+            <span>{node.name}</span>
           </div>
           {node.children && (
             <FileTree
@@ -198,11 +195,9 @@ export default function Page() {
 
       try {
         const hint = await fetchHint(result);
-        console.log("Hint received:", hint);
 
         const hidden = deriveHiddenKey(result);
         setHiddenKey(hidden);
-        console.log("Derived hidden key:", hidden);
       } catch (err) {
         console.error("Error during hint/key logic:", err);
       }
@@ -213,8 +208,6 @@ export default function Page() {
 
   useEffect(() => {
     if (!selectedPath || !hiddenKey) return;
-
-    console.log("Fetching CDN URL for:", selectedPath);
 
     async function fetchImage() {
       try {
@@ -244,24 +237,20 @@ export default function Page() {
     fetchImage();
   }, [selectedPath, hiddenKey]);
 
-  console.log("Selected path:", selectedPath);
-  console.log("Hidden key:", hiddenKey);
-  console.log("Image URL:", imageUrl);
-
   return (
-    <main className="p-4 flex gap-8">
+    <main className="p-4 flex gap-8 h-screen">
       {loading ? (
         <p>Loading files...</p>
       ) : (
         <>
-          <div className="w-1/2 overflow-auto border-r pr-4">
+          <div className="w-[30%] overflow-y-auto border-r pr-4">
             <FileTree
               nodes={tree}
               onSelect={setSelectedPath}
               selected={selectedPath}
             />
           </div>
-          <div className="w-1/2">
+          <div className="w-[70%] overflow-y-auto">
             {selectedPath && imageUrl ? (
               <img src={imageUrl} alt={selectedPath} className="max-w-full" />
             ) : (
