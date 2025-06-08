@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 
 const API_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbGx5Yy5zdGFya0BnbWFpbC5jb20iLCJhc3Nlc3NtZW50IjoiZnVsbF9zdGFjayIsImNyZWF0ZWRfYXQiOiIyMDI1LTA1LTE2VDE3OjI5OjM5LjYxNjQ3NzA3M1oiLCJpYXQiOjE3NDc0MTY1Nzl9.cPd1-DtcN7rVkXZQt0b7DNzCwB1mXw3hxzfLpuQBwag";
-const BASE_URL = "https://mintlify-take-home.com";
+  "";
+const BASE_URL = "";
 
 type FileTreeNode = {
   path: string;
